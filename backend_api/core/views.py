@@ -14,8 +14,15 @@ def home(request):
 
 @api_view(['GET','POST'])
 def todos_list(request):
-    todos = Todo.objects.all()
-    serializer = TodoSerializer(todos,many=True)
 
+    if request.method == 'GET':
+        todos = Todo.objects.all()
+        serializer = TodoSerializer(todos,many=True)
+        return Response(serializer.data)
+    
+    if request.method == 'POST':
+        name = request.data.get('name')
+        todo = Todo.objects.create(name=name)
+        serializer = TodoSerializer(todo,many=False)
+        return Response(serializer.data)
 
-    return Response(serializer.data)
