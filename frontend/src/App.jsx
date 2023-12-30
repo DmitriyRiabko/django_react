@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import { PlusIcon } from "@heroicons/react/24/solid";
+import styles from "./App.module.scss";
+import "macro-css";
+import axios from "axios";
+import { API_URL } from "./config";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useState([]);
+
+  const addTodoHandler = () => {};
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const { data } = await axios.get(`${API_URL}/todos/`);
+      setTodos(data);
+    };
+
+    fetchTodos();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <h1 className={styles.header}>Todo App</h1>
+        <div className={styles.input_block}>
+          <input type="text" className={styles.input} />
+          <i onClick={addTodoHandler}>
+            <PlusIcon width={30} className={styles.plus} />
+          </i>
+        </div>
+
+        <div className={styles.todo_container}>
+          {todos?.map((todo, index) => (
+            <div key={todo.id} className={styles.todo_item}>
+              {" "}
+              <p className={styles.todo_name}>{todo.name}</p>
+              <p className={styles.todo_status}>{todo.status}</p>
+              <p className={styles.todo_created}>{todo.created_at}</p>
+
+            </div>
+          ))}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
