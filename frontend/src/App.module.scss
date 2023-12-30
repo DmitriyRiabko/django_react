@@ -5,21 +5,17 @@
 .wrapper{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 
-    width: 100vw;
-    height: 100vh;
     background-color: rgb(30, 30, 61);
 
 
     .container{
-        margin: auto auto;
-        width: 90%;
-        min-height: 300px;
-
-
+        margin: 0 auto;
+        width: 1200px;
+        height: 100vh;
         .header{
             padding: 20px;
-            display: flex;
-            justify-content: center;
+            text-align: center;
+         
             width: 100%;
             color: white;
             font-size: 35px;
@@ -70,33 +66,126 @@
     .todo_container{
         display: flex;
         margin: 0 auto;
-        flex-direction: column;
         justify-content: center;
-        width: 80%;
         height: auto;
+        gap: 10px;
+        flex-wrap: wrap;
+        max-width: 80%;
 
         .todo_item{
             margin-bottom: 10px;
             background-color: rgb(21, 21, 46);
             color: inherit;
-            width: 100%;
+            flex: 1;
             display: flex;
             color: white;
             align-items: center;
             border-radius: 10px;
             padding-bottom: 20px;
             padding-top: 20px;
+            justify-content: space-between;
+            position: relative;
+            
+            min-width: 30%;
+            max-width: 30%;
+
+            &:hover{
+                .delete{
+                    display: block;
+                }
+            }
             
 
 
             .todo_name{
                 padding-left: 20px;
+                cursor: pointer;
+            }
 
-                flex: 2;
+
+            .status{
+                padding-right: 20px;
+                color: rgb(3, 177, 3);
+            }
+
+
+            .delete{
+                cursor: pointer;
+                position: absolute;
+                right: -5px;
+                top: -5px;
+                display: none;
+
             }
         }
     }
 
 
 
+
+    .edit_block{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        margin: 0 auto;
+        width: 300px;
+        background-color: aliceblue;
+        padding: 10px;
+        border-radius: 10px;
+
+
+
+        .edit_header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+        }
+
+
+
+        .rename_block{
+            margin-top: 5px;
+            display: flex;
+            justify-content: c;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid blue;
+
+
+
+            .rename_input{
+                border: none;
+                padding: 5px;
+                width: 100%;
+                border-radius: 10px;
+
+
+            }
+        }
+
+
+        .edit_btn{
+            font-weight: 600;
+            display: block;
+            margin: 0 auto;
+            margin-top: 5px;
+            border: none;
+            width: 100%;
+            border-radius: 10px;
+            padding: 5px;
+            color: white;
+            background-color: green;
+            cursor: pointer;
+
+        }
+    }
+
+}
+
+
+.close{
+    cursor: pointer;
 }
