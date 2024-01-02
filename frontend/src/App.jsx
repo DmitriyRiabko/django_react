@@ -10,19 +10,56 @@ function App() {
   const [editStatus, setEditStatus] = useState(false);
   const [editName, setEditName] = useState("");
   const [editTodo, setEditTodo] = useState({});
-  const [name, setName] = useState('')
+  const [name, setName] = useState("");
 
   const [isOpened, setIsOpened] = useState(false);
 
   const addTodoHandler = () => {
-    const postTodo = async() =>{
+    const postTodo = async () => {
       const postTodoData = {
-        name:name
-      }
-    }
+        name: name,
+      };
+
+      const { data } = await axios.post(`${API_URL}/todos/`, postTodoData);
+      setName("");
+      setTodos((todos) => [...todos, data]);
+    };
+
+    postTodo();
   };
-  const deleteTodoHandler = () => {};
-  const editTodoHandler = (id) => {};
+  const deleteTodoHandler = (id) => {
+    const deleteTodo = async () => {
+      await axios.delete(`${API_URL}/todos/${id}/`);
+      const NewTodos = todos.filter((todo) => todo.id !== id);
+      setTodos(NewTodos)
+    };
+    deleteTodo();
+  };
+
+  const editTodoHandler = (id) => {
+    const updatePatchTodo = async ()=>{
+      const updateData={
+        name:editName,
+        status:editStatus,
+      }
+
+      const {data} = await axios.patch(`${API_URL}/todos/${id}/`,updateData)
+        const updatedTodos = todos.map(todo=>{
+          if (todo.id === id){
+            todo.name = editName;
+            todo.status = editStatus
+          } 
+          return todo
+        })
+        setTodos(updatedTodos)
+        setEditName('')
+        setEditTodo({})
+        setEditStatus(false)
+        setIsOpened(false)
+    }
+
+    updatePatchTodo()
+  };
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -38,7 +75,13 @@ function App() {
       <div className={styles.container}>
         <h1 className={styles.header}>Todo App</h1>
         <div className={styles.input_block}>
-          <input placeholder="Add Todo here" type="text" className={styles.input} />
+          <input
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            placeholder="Add Todo here"
+            type="text"
+            className={styles.input}
+          />
           <i onClick={addTodoHandler}>
             <PlusIcon width={30} className={styles.plus} />
           </i>
@@ -66,7 +109,11 @@ function App() {
                 className={styles.delete}
                 onClick={() => deleteTodoHandler(todo.id)}
               >
-                <TrashIcon width={20} fill="red" />
+                <TrashIcon
+                  width={20}
+                  fill="red"
+                  onClick={() => deleteTodoHandler(todo.id)}
+                />
               </i>
             </div>
           ))}
